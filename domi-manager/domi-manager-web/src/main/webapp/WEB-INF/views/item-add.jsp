@@ -118,7 +118,7 @@
 		$.ajax({
 		   type: "POST",
 		   url: "/rest/item",
-		   data: $("#itemAddForm").serialize(),
+		   data: $("#itemAddForm").serialize(), //表单序列化，将所有的输入内容转化成K/V数据格
 		   statusCode :{
 			   201 : function(){
 				   $.messager.alert('提示','新增商品成功!');

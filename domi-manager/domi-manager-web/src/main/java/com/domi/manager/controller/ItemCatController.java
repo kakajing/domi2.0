@@ -16,19 +16,25 @@ import java.util.List;
  * Author 卡卡
  * Created by jing on 2016/12/10.
  */
+@RequestMapping("item/cat")
 @Controller
-@RequestMapping("/item/cat")
 public class ItemCatController {
 
     @Autowired
     private ItemCatService itemCatService;
 
+    /**
+     * 根据父节点id查询商品类目表
+     */
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<ItemCat>> queryItemCat(
             @RequestParam(value = "id", defaultValue = "0") Long parentId){
         try {
-            List<ItemCat> itemCats = this.itemCatService.queryItemCat(parentId);
-            if (itemCats == null || itemCats.isEmpty()){
+        //    List<ItemCat> itemCats = this.itemCatService.queryItemCat(parentId);
+            ItemCat itemCat = new ItemCat();
+            itemCat.setParentId(parentId);
+            List<ItemCat> itemCats = itemCatService.queryListByWhere(itemCat);
+            if (itemCats == null && itemCats.isEmpty()){
                 //资源不存在
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
             }

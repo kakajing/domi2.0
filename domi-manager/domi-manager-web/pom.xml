@@ -70,6 +70,12 @@
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
         </dependency>
+        <dependency>
+            <groupId>tk.mybatis</groupId>
+            <artifactId>mapper</artifactId>
+            <version>3.3.9</version>
+        </dependency>
+
     </dependencies>
 
 
