@@ -4,6 +4,7 @@ import com.domi.common.utils.IDUtils;
 import com.domi.manager.mapper.ItemMapper;
 import com.domi.manager.pojo.Item;
 import com.domi.manager.pojo.ItemDesc;
+import com.domi.manager.pojo.ItemParamItem;
 import com.github.abel533.entity.Example;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -22,9 +23,12 @@ public class ItemService extends BaseService<Item> {
     @Autowired
     private ItemDescService itemDescService;
     @Autowired
+    private ItemParamItemService itemParamItemService;
+
+    @Autowired
     private ItemMapper itemMapper;
 
-    public void saveItem(Item item, String desc) {
+    public void saveItem(Item item, String desc, String itemParams) {
         long itemId = IDUtils.genItemId();
         item.setId(itemId);
 
@@ -40,6 +44,12 @@ public class ItemService extends BaseService<Item> {
         // 保存描述数据
         this.itemDescService.save(itemDesc);
 
+        //保存规格参数数据
+        ItemParamItem itemParamItem = new ItemParamItem();
+        itemParamItem.setItemId(item.getId());
+        itemParamItem.setParamData(itemParams);
+        this.itemParamItemService.save(itemParamItem);
+
     }
 
     public PageInfo<Item> queryPageList(Integer page, Integer rows) {
@@ -53,7 +63,7 @@ public class ItemService extends BaseService<Item> {
         return new PageInfo<Item>(items);
     }
 
-    public void updateItem(Item item, String desc) {
+    public void updateItem(Item item, String desc, String itemParams) {
        //强制设置不能修改的字段为null
         item.setStatus(null);
         item.setCreated(null);
@@ -64,5 +74,7 @@ public class ItemService extends BaseService<Item> {
         itemDesc.setItemId(item.getId());
         itemDesc.setItemDesc(desc);
         this.itemDescService.updateSelective(itemDesc);
+
+        this.itemParamItemService.updateItemParamItem(item.getId(), itemParams);
     }
 }

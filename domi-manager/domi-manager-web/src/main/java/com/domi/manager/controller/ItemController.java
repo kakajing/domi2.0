@@ -35,7 +35,9 @@ public class ItemController {
      * @return
      */
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<Void> saveItem(Item item, @RequestParam("desc") String desc){
+    public ResponseEntity<Void> saveItem(Item item,
+                                         @RequestParam("desc") String desc,
+                                         @RequestParam("itemParams") String itemParams){
 
         try {
             if (LOGGER.isInfoEnabled()){
@@ -46,7 +48,7 @@ public class ItemController {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
             }
             //保存商品的基本数据
-            this.itemService.saveItem(item, desc);
+            this.itemService.saveItem(item, desc, itemParams);
 
             if (LOGGER.isInfoEnabled()){
                 LOGGER.info("新增商品成功, itemId = {}", item.getId());
@@ -88,7 +90,8 @@ public class ItemController {
      * @return
      */
     @RequestMapping(method = RequestMethod.PUT)
-    public ResponseEntity<Void> updateItem(Item item, @RequestParam("desc") String desc){
+    public ResponseEntity<Void> updateItem(Item item, @RequestParam("desc") String desc,
+                                           @RequestParam("itemParams") String itemParams){
 
         try {
             if (LOGGER.isInfoEnabled()){
@@ -99,7 +102,7 @@ public class ItemController {
                 //响应400
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
             }
-            this.itemService.updateItem(item, desc);
+            this.itemService.updateItem(item, desc, itemParams);
 
             if (LOGGER.isInfoEnabled()){
                 LOGGER.info("修改商品成功, itemId = {}", item.getId());
