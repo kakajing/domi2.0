@@ -15,10 +15,10 @@ $(function(){
 		url : '/rest/content/category',
 		animate: true,
 		method : "GET",
-		onContextMenu: function(e,node){
+		onContextMenu: function(e,node){  //右键菜单事件
             e.preventDefault();//阻止默认的事件，浏览器的右键菜单
-            $(this).tree('select',node.target);
-            $('#contentCategoryMenu').menu('show',{
+            $(this).tree('select',node.target); //选中当前的节点
+            $('#contentCategoryMenu').menu('show',{ //显示菜单，并指定显示位置
                 left: e.pageX, //显示的位置
                 top: e.pageY
             });
@@ -30,10 +30,11 @@ $(function(){
         		$.post("/rest/content/category",{parentId:node.parentId,name:node.text},function(data){
         			_tree.tree("update",{
         				target : node.target,
-        				id : data.id
+        				id : data.id  //将临时的id修改为正式的id值
         			});
         		});
         	}else{
+                //重命名
         		$.ajax({
         			   type: "PUT",
         			   url: "/rest/content/category",
@@ -61,7 +62,8 @@ function menuHandler(item){
                 parentId : node.id
             }]
         }); 
-		var _node = tree.tree('find',0);
+		var _node = tree.tree('find',0); //查找到新添加的节点
+        //选中该节点并开始编辑
 		tree.tree("select",_node.target).tree('beginEdit',_node.target);
 	}else if(item.name === "rename"){
 		tree.tree('beginEdit',node.target);
@@ -75,6 +77,7 @@ function menuHandler(item){
      			   success: function(msg){
      				   //$.messager.alert('提示','新增商品成功!');
      				  tree.tree("remove",node.target);
+                       $.messager.alert('提示','删除成功!');
      			   },
      			   error: function(){
      				   $.messager.alert('提示','删除失败!');
