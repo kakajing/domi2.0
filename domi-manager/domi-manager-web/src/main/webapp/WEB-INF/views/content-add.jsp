@@ -75,19 +75,37 @@
 				}); */
 				
 				//提交到后台的RESTful
-				$.ajax({
-				   type: "POST",
+//				$.ajax({
+//				   type: "POST",
+//				   url: "/rest/content",
+//				   data: $("#contentAddForm").serialize(),
+//				   success: function(msg){
+//					   $.messager.alert('提示','新增内容成功!');
+//   						$("#contentList").datagrid("reload");
+//   						TT.closeCurrentWindow();
+//				   },
+//				   error: function(){
+//					   $.messager.alert('提示','新增内容失败!');
+//				   }
+//				});
+
+				//提交到后台的RESTful
+				$.ajax({  //点击提交事件
+					type: "POST",
 				   url: "/rest/content",
 				   data: $("#contentAddForm").serialize(),
-				   success: function(msg){
-					   $.messager.alert('提示','新增内容成功!');
-   						$("#contentList").datagrid("reload");
-   						TT.closeCurrentWindow();
-				   },
-				   error: function(){
-					   $.messager.alert('提示','新增内容失败!');
-				   }
+					statusCode : {
+						201 : function () {
+							$.messager.alert('提示','新增内容成功!');
+							$("#contentList").datagrid("reload");
+							TT.closeCurrentWindow();
+						},
+						500 : function () {
+							$.messager.alert('提示', '新增内容失败!');
+						}
+					}
 				});
+
 			},
 			clearForm : function(){
 				$('#contentAddForm').form('reset');
