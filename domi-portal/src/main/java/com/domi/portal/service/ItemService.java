@@ -4,10 +4,12 @@ import com.domi.common.utils.HttpClientUtil;
 import com.domi.common.utils.JsonUtils;
 import com.domi.manager.pojo.ItemDesc;
 import com.domi.portal.bean.Item;
+import com.domi.portal.compoent.JedisClient;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -20,8 +22,15 @@ import java.io.IOException;
 @Service
 public class ItemService {
 
+    @Autowired
+    private JedisClient jedisClient;
+
     @Value("${MANAGER_DOMI_URL}")
     private String MANAGER_DOMI_URL;
+    @Value("${REDIS_ITEM_KEY}")
+    private String REDIS_ITEM_KEY;
+    @Value("${REDIS_EXPIRE}")
+    private Integer REDIS_EXPIRE;
 
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
@@ -32,19 +41,39 @@ public class ItemService {
      */
     public Item queryItemById(Long itemId) {
 
+        //先从缓存中命中
+        String key = REDIS_ITEM_KEY + itemId;
+        try {
+            String cacheData = jedisClient.get(key);
+            if (StringUtils.isNotEmpty(cacheData)){
+                //命中
+                return JsonUtils.jsonToPojo(cacheData, Item.class);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         try {
             String url = MANAGER_DOMI_URL + "/item/" + itemId;
             String jsonData = HttpClientUtil.doGet(url);
             if (StringUtils.isEmpty(jsonData)){
                 return null;
             }
-         //   return MAPPER.readValue(jsonData, Item.class);
+
+            //向redis中添加缓存
+            try {
+                jedisClient.set(REDIS_ITEM_KEY, JsonUtils.objectToJson(jsonData));
+                jedisClient.expire(REDIS_ITEM_KEY, REDIS_EXPIRE);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            //   return MAPPER.readValue(jsonData, Item.class);
             return JsonUtils.jsonToPojo(jsonData, Item.class);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
-
     }
 
     /**
