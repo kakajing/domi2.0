@@ -1,7 +1,6 @@
 package com.domi.manager.service;
 
 import com.domi.common.bean.EasyUIResult;
-import com.domi.manager.mapper.ItemParamMapper;
 import com.domi.manager.mapper.ItemParamexdMapper;
 import com.domi.manager.pojo.ItemParam;
 import com.domi.manager.pojo.ItemParamexd;

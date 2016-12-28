@@ -12,4 +12,9 @@
     <!--扫描包加载Service实现类-->
     <context:component-scan base-package="com.domi.manager.service"/>
 
+    <bean class="redis.clients.jedis.JedisPool">
+        <constructor-arg name="host" value="192.168.154.128"/>
+        <constructor-arg name="port" value="6379"/>
+    </bean>
+
 </beans>

@@ -3,6 +3,8 @@ package com.domi.manager.service;
 import com.domi.common.bean.ItemCatData;
 import com.domi.common.bean.ItemCatResult;
 import com.domi.manager.pojo.ItemCat;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -10,12 +12,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 /**
  * Author 卡卡
  * Created by jing on 2016/12/10.
  */
 @Service
 public class ItemCatService extends BaseService<ItemCat>{
+
 
 //
 //    @Autowired
@@ -31,11 +35,30 @@ public class ItemCatService extends BaseService<ItemCat>{
 //        itemCat.setParentId(parentId);
 //        return this.itemCatMapper.select(itemCat);
 //    }
+    private static final ObjectMapper MAPPER = new ObjectMapper();
 
+//    @Autowired
+//    private JedisClient jedisClient;
+
+    @Value("${REDIS_KEY}")
+    private String REDIS_KEY;
+    @Value("${REDIS_EXPIRE}")
+    private Integer REDIS_EXPIRE;
 
     public ItemCatResult queryAllToTree() {
 
         ItemCatResult result = new ItemCatResult();
+//        try {
+//            // 先从缓存中命中，如果命中的话返回，没有命中，程序继续执行
+//            String json = jedisClient.get(REDIS_KEY);
+//            if (StringUtils.isNotEmpty(json)){
+//                // 命中
+//                return JsonUtils.jsonToPojo(json, ItemCatResult.class);
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+
         // 全部查出，并且在内存中生成树形结构
         List<ItemCat> cats = super.queryAll();
 
@@ -59,7 +82,7 @@ public class ItemCatService extends BaseService<ItemCat>{
                 continue;
             }
 
-            //封装耳机对象
+            //封装二级对象
             List<ItemCat> itemCatList2 = itemCatMap.get(itemCat.getId());
             List<ItemCatData> itemCatData2 = new ArrayList<ItemCatData>();
             itemCatData.setItems(itemCatData2);
@@ -83,6 +106,16 @@ public class ItemCatService extends BaseService<ItemCat>{
                 break;
             }
         }
+
+//        try {
+//            // 将结果集写入到缓存中
+//         //   jedisClient.hset(REDIS_KEY, MAPPER.writeValueAsString(result), REDIS_EXPIRE);
+//            jedisClient.set(REDIS_KEY, MAPPER.writeValueAsString(result));
+//            jedisClient.expire(REDIS_KEY, REDIS_EXPIRE);
+//        } catch (JsonProcessingException e) {
+//            e.printStackTrace();
+//        }
+
         return result;
     }
 }
