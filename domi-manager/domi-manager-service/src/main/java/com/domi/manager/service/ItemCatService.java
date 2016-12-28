@@ -2,8 +2,13 @@ package com.domi.manager.service;
 
 import com.domi.common.bean.ItemCatData;
 import com.domi.common.bean.ItemCatResult;
+import com.domi.common.component.JedisClient;
+import com.domi.common.utils.JsonUtils;
 import com.domi.manager.pojo.ItemCat;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -37,8 +42,8 @@ public class ItemCatService extends BaseService<ItemCat>{
 //    }
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
-//    @Autowired
-//    private JedisClient jedisClient;
+    @Autowired
+    private JedisClient jedisClient;
 
     @Value("${REDIS_KEY}")
     private String REDIS_KEY;
@@ -48,16 +53,16 @@ public class ItemCatService extends BaseService<ItemCat>{
     public ItemCatResult queryAllToTree() {
 
         ItemCatResult result = new ItemCatResult();
-//        try {
-//            // 先从缓存中命中，如果命中的话返回，没有命中，程序继续执行
-//            String json = jedisClient.get(REDIS_KEY);
-//            if (StringUtils.isNotEmpty(json)){
-//                // 命中
-//                return JsonUtils.jsonToPojo(json, ItemCatResult.class);
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+        try {
+            // 先从缓存中命中，如果命中的话返回，没有命中，程序继续执行
+            String json = jedisClient.get(REDIS_KEY);
+            if (StringUtils.isNotEmpty(json)){
+                // 命中
+                return JsonUtils.jsonToPojo(json, ItemCatResult.class);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         // 全部查出，并且在内存中生成树形结构
         List<ItemCat> cats = super.queryAll();
@@ -107,14 +112,14 @@ public class ItemCatService extends BaseService<ItemCat>{
             }
         }
 
-//        try {
-//            // 将结果集写入到缓存中
-//         //   jedisClient.hset(REDIS_KEY, MAPPER.writeValueAsString(result), REDIS_EXPIRE);
-//            jedisClient.set(REDIS_KEY, MAPPER.writeValueAsString(result));
-//            jedisClient.expire(REDIS_KEY, REDIS_EXPIRE);
-//        } catch (JsonProcessingException e) {
-//            e.printStackTrace();
-//        }
+        try {
+            // 将结果集写入到缓存中
+         //   jedisClient.hset(REDIS_KEY, MAPPER.writeValueAsString(result), REDIS_EXPIRE);
+            jedisClient.set(REDIS_KEY, JsonUtils.objectToJson(result));
+            jedisClient.expire(REDIS_KEY, REDIS_EXPIRE);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         return result;
     }
