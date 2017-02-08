@@ -1,7 +1,7 @@
 package com.domi.sso.mapper;
 
 import com.domi.sso.pojo.User;
-import com.github.abel533.mapper.Mapper;
+import tk.mybatis.mapper.common.Mapper;
 
 /**
  * Author 卡卡

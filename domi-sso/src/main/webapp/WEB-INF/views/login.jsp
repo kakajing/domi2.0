@@ -5,10 +5,10 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=gb2312"/>
     <title>登录嘟米</title>
-    <link type="text/css" rel="stylesheet" href="/css/login.css"/>
-    <script type="text/javascript" src="/js/jquery-1.2.6.min.js"></script>
-    <script type="text/javascript" src="/js/login/g.base.js"></script>
-   	<script type="text/javascript" src="/js/login/jdEdit.js"></script>
+    <link type="text/css" rel="stylesheet" href="http://static.domi.com/css/login.css"/>
+    <script type="text/javascript" src="http://static.domi.com/js/jquery-1.2.6.min.js"></script>
+    <script type="text/javascript" src="http://static.domi.com/js/login/g.base.js"></script>
+   	<script type="text/javascript" src="http://static.domi.com/js/login/jdEdit.js"></script>
     <script type="text/javascript">
         var pgeditor = new jQuery.pge({
             pgePath: "#",
@@ -45,7 +45,7 @@
 <div class="w">
     <div id="logo">
     	<a href="http://www.taotao.com/" clstag="passport|keycount|login|01">
-    		<img src="/images/taotao-logo.gif" alt="嘟米" width="170" height="60"/>
+    		<img src="http://static.domi.com/images/taotao-logo.gif" alt="嘟米" width="170" height="60"/>
     	</a><b></b>
    	</div>
 </div>
@@ -53,7 +53,7 @@
     <input type="hidden" id="uuid" name="uuid" value="1359c13d-7daa-4a2a-972d-f09e09e6605a"/>
     <div class=" w1" id="entry">
         <div class="mc " id="bgDiv">
-            <div id="entry-bg" clstag="passport|keycount|login|02" style="width: 511px; height: 455px; position: absolute; left: -44px; top: -44px; background: url(http://static.taotao.com/images/544a11d3Na5a3d566.png) 0px 0px no-repeat;">
+            <div id="entry-bg" clstag="passport|keycount|login|02" style="width: 511px; height: 455px; position: absolute; left: -44px; top: -44px; background: url(http://static.domi.com/images/544a11d3Na5a3d566.png) 0px 0px no-repeat;">
 			</div>
             <div class="form ">
                 <div class="item fore1">
@@ -174,7 +174,7 @@
                 </div>
         </div>
         <div class="free-regist">
-            <span><a href="http://www.taotao.com/user/register.html" clstag="passport|keycount|login|08">免费注册&gt;&gt;</a></span>
+            <span><a href="http://localhost:8083/user/register.html" clstag="passport|keycount|login|08">免费注册&gt;&gt;</a></span>
         </div>
     </div>
 </form>
@@ -186,9 +186,9 @@
     <jsp:include page="../commons/footer-links.jsp"></jsp:include>
     <!-- links end -->
 </div>
-<script type="text/javascript" src="/js/login/login.js"></script>
-<script type="text/javascript" src="/js/login/jdThickBox.js"></script>
-<script type="text/javascript" src="/js/login/checkClient.js"></script>
+<script type="text/javascript" src="http://static.domi.com/js/login/login.js"></script>
+<script type="text/javascript" src="http://static.domi.com/js/login/jdThickBox.js"></script>
+<script type="text/javascript" src="http://static.domi.com/js/login/checkClient.js"></script>
 <script>
    $("#jdsafe").hover(function () {
        $("#tip-safe").show();

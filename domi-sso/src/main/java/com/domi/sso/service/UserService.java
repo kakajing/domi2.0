@@ -2,8 +2,11 @@ package com.domi.sso.service;
 
 import com.domi.sso.mapper.UserMapper;
 import com.domi.sso.pojo.User;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
 
 /**
  * Author 卡卡
@@ -31,5 +34,16 @@ public class UserService {
                 return null;
         }
         return this.userMapper.selectOne(user) == null;
+    }
+
+    public Boolean saveUser(User user) {
+        user.setId(null);
+        user.setCreated(new Date());
+        user.setUpdated(user.getCreated());
+
+        //密码加密处理，使用md5
+        user.setPassword(DigestUtils.md5Hex(user.getPassword()));
+
+        return this.userMapper.insert(user) == 1;
     }
 }

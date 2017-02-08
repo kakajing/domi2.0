@@ -34,12 +34,12 @@
     <!-- 自动扫描注册Mybatis mapper -->
     <bean class="tk.mybatis.spring.mapper.MapperScannerConfigurer">
         <property name="basePackage" value="com.domi.sso.mapper"/>
-        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
-        <!--下面这个配置可以不写，默认就是这个-->
-        <property name="properties">
-            <value>
-                mappers=tk.mybatis.mapper.common.Mapper
-            </value>
-        </property>
+        <!--<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>-->
+        <!--&lt;!&ndash;下面这个配置可以不写，默认就是这个&ndash;&gt;-->
+        <!--<property name="properties">-->
+            <!--<value>-->
+                <!--mappers=tk.mybatis.mapper.common.Mapper-->
+            <!--</value>-->
+        <!--</property>-->
     </bean>
 </beans>
