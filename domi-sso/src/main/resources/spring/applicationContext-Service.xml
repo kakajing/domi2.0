@@ -12,5 +12,12 @@
 
     <!--扫描包加载Service实现类-->
     <context:component-scan base-package="com.domi.sso.service"/>
+    <!-- 配置redis客户端单机版 -->
+    <bean id="jedisPool" class="redis.clients.jedis.JedisPool">
+        <constructor-arg name="host" value="192.168.154.128"/>
+        <constructor-arg name="port" value="6379"/>
+    </bean>
+    <!-- 配置redis客户端实现类 -->
+    <bean id="jedisClientSingle" class="com.domi.common.component.impl.JedisClientSingle"/>
 
 </beans>
